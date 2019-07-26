@@ -11,6 +11,10 @@
 // success(): boolean
 // DEVUELVE LISTA O MATRIZ DE INSTANCIAS DE LA REINA, SI SU TAMAÑO NO ES 8 SUCCESS = TRUE: solutions(): List<Queen>
 
+const queen = '♛';
+const threats = '☠';
+
+
 // LONGITUD DE TABLERO ====================================
 let arrQueen = [
   0, '☠', 0, 0, 0, 0, '♛', 0,
@@ -29,8 +33,9 @@ console.log(`La longitud del tablero es: ${arrQueen.length} casillas`);
 // NÚMERO DE REINAS============================================
 function withQueen(arr, item) {
   let i = arr.indexOf( item );
-    return arr.filter(function(e) {
-      return e == '♛';
+    return arr.filter(
+      function(e) {
+      return e == queen;
     });
   }
   
@@ -39,14 +44,15 @@ console.log(`El número de reinas es: ${countQueens}`);
 
 // POSICIÓN DE LAS REINAS=====================================
 for(let i = 0; i <= arrQueen.length; i++) {
-  console.log(`La posición de la reina es: ${arrQueen.indexOf('♛', i + 1)}`);
+  console.log(`La posición de la reina es: ${arrQueen.indexOf(queen, i + 1)}`);
 }
 
 // NÚMERO DE AMENAZAS==========================================
 function arrThreats(arr, item) {
   let i = arr.indexOf( item );
-    return arr.filter(function(e) {
-      return e == '☠';
+    return arr.filter(
+      function(e) {
+      return e == threats;
     });
   }
   
@@ -55,20 +61,37 @@ console.log(`El número de amenazas es: ${countThreats}`);
 
 // POSICIÓN DE LAS AMENAZAS=====================================
 for(let i = 0; i <= arrQueen.length; i++) {
-  console.log(`La posición de la amenaza es: ${arrQueen.indexOf('☠', i + 1)}`);
+  console.log(`La posición de la amenaza es: ${arrQueen.indexOf(threats, i + 1)}`);
 }
 
 // CASILLA VACÍA================================================
-function empty() {
-  for(let i = 0; i <= arrQueen.length; i++) {
+// function empty() {
+//   for(let i = 0; i <= arrQueen.length; i++) {
+//     if(i === undefined) {
+//       let x = new Boolean(true);
+//       return x;
+//     } 
+//   }
+// }
+
+console.log(arrQueen[27]);
+
+// INSTANCIAS DE LA REINA
+// SOLUCIÓN: solve(): void
+// SOLUCIÓN: result(): Solution
+// success(): boolean
+// DEVUELVE LISTA O MATRIZ DE INSTANCIAS DE LA REINA, SI SU TAMAÑO NO ES 8 SUCCESS = TRUE: solutions(): List<Queen>
+
+function solve(arr, position) {
+  for(let i=0; i<arrQueen; i++) {
     if(i === undefined) {
-      let x = new Boolean(true);
-      return x;
-    } 
+      console.log('La reina se puede mover aquí');
+    } else if(i === queen) {
+      console.log('En esta posición ya hay otra reina');
+    } else {
+      console.log('En esta posción existe una amenaza');
+    }
   }
 }
 
-console.log(empty(arrQueen[1]));
-console.log(arrQueen[1]);
-
-// INSTANCIAS DE LA REINA
+solve();
