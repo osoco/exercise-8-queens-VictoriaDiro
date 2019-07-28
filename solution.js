@@ -1,97 +1,109 @@
-// REPRESENTA TABLERO Y Nº DE REINAS: withQueen(Queen): Board
-// AMENAZAS: threats(): boolean
-// SI SE PUEDE COLOCAR REINA: empty(Position): boolean
-// POSICIÓN DE LA REINA: position(): Position
-// INFO TABLERO: board(): Board
-// POSICIÓN EN EL TABLERO (1-8): row(): Number
-// POSICIÓN EN EL TABLERO (1-8): column(): Number
-// AMENAZA EN POSICIÓN: threats(Position): boolean
-// SOLUCIÓN: solve(): void
-// SOLUCIÓN: result(): Solution
-// success(): boolean
-// DEVUELVE LISTA O MATRIZ DE INSTANCIAS DE LA REINA, SI SU TAMAÑO NO ES 8 SUCCESS = TRUE: solutions(): List<Queen>
+// Situar 8 reinas en un tablero sin que se amenacen entre ellas.
+// Las reinas se amenazan si están en la misma columna, fila o diagonal.
+// 92 posibles soluciones en un tablero de 8x8.
 
-const queen = '♛';
-const threats = '☠';
+// Same Row: R1 = R2
+// Same Column: C1 = C2
+// Same Diagonal: |R1 - R2| = |C1 - C2|
+// Diagonal example: |3-7| = |4-8| -> 4=4 -> true
 
+let arrQueen = {
+  0: ['♛', 0, 0, 0, 0, 0, 0, 0],
+  1: [0, 0, 0, 0, 0, 0, '♛', 0],
+  2: [0, 0, 0, 0, '♛', 0, 0, 0],
+  3: [0, 0, 0, 0, 0, 0, 0, '♛'],
+  4: [0, '♛', 0, 0, 0, 0, 0, 0],
+  5: [0, 0, 0, '♛', 0, 0, 0, 0],
+  6: [0, 0, 0, 0, 0, '♛', 0, 0],
+  7: [0, 0, '♛', 0, 0, 0, 0, 0]
+};
 
-// LONGITUD DE TABLERO ====================================
-let arrQueen = [
-  0, '☠', 0, 0, 0, 0, '♛', 0,
-  0, 0, '♛', 0, 0, 0, 0, '☠',
-  0, 0, 0, 0, '☠', 0, 0, '♛',
-  '♛', 0, 0, '♛', 0, 0, 0, 0,
-  0, 0, '☠', 0, 0, 0, '☠', 0,
-  '☠', 0, '♛', 0, 0, 0, 0, '☠',
-  0, 0, 0, 0, '♛', 0, 0, 0,
-  0, '☠', 0, 0, 0, 0, '♛', 0,
-];
+// ROWS
+// Test if a specific row on this board contains a conflict
+function hasRowConflictAt (rowIndex) {
+  let currentRow = this.get(rowIndex);
+  let currentTotal = 0;
 
-console.log(arrQueen);
-console.log(`La longitud del tablero es: ${arrQueen.length} casillas`);
-
-// NÚMERO DE REINAS============================================
-function withQueen(arr, item) {
-  let i = arr.indexOf( item );
-    return arr.filter(
-      function(e) {
-      return e == queen;
-    });
-  }
-  
-let countQueens = withQueen(arrQueen, 0);
-console.log(`El número de reinas es: ${countQueens}`);
-
-// POSICIÓN DE LAS REINAS=====================================
-for(let i = 0; i <= arrQueen.length; i++) {
-  console.log(`La posición de la reina es: ${arrQueen.indexOf(queen, i + 1)}`);
-}
-
-// NÚMERO DE AMENAZAS==========================================
-function arrThreats(arr, item) {
-  let i = arr.indexOf( item );
-    return arr.filter(
-      function(e) {
-      return e == threats;
-    });
-  }
-  
-let countThreats = arrThreats(arrQueen, 0);
-console.log(`El número de amenazas es: ${countThreats}`);
-
-// POSICIÓN DE LAS AMENAZAS=====================================
-for(let i = 0; i <= arrQueen.length; i++) {
-  console.log(`La posición de la amenaza es: ${arrQueen.indexOf(threats, i + 1)}`);
-}
-
-// CASILLA VACÍA================================================
-// function empty() {
-//   for(let i = 0; i <= arrQueen.length; i++) {
-//     if(i === undefined) {
-//       let x = new Boolean(true);
-//       return x;
-//     } 
-//   }
-// }
-
-console.log(arrQueen[27]);
-
-// INSTANCIAS DE LA REINA
-// SOLUCIÓN: solve(): void
-// SOLUCIÓN: result(): Solution
-// success(): boolean
-// DEVUELVE LISTA O MATRIZ DE INSTANCIAS DE LA REINA, SI SU TAMAÑO NO ES 8 SUCCESS = TRUE: solutions(): List<Queen>
-
-function solve(arr, position) {
-  for(let i=0; i<arrQueen; i++) {
-    if(i === undefined) {
-      console.log('La reina se puede mover aquí');
-    } else if(i === queen) {
-      console.log('En esta posición ya hay otra reina');
-    } else {
-      console.log('En esta posción existe una amenaza');
+  for (let i = 0; i < currentRow.length; i++) {
+    if (currentRow[i] === 1) {
+      currentTotal++;
     }
   }
+
+  if (currentTotal < 1) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+// COLUMNS
+// Test if any column on this board contains conflicts
+function hasAnyColumnConflicts () {
+
+  for (let i = 0; i < this.get('n'); i++) {
+    if(this.hasColumnConflictAt(i)) {
+      return true;
+    };
+  }
+  return false;
 }
 
-solve();
+function hasColumnConflictAt (columnIndex) {
+  let currentColumn = this.get(columnIndex);
+  let currentTotal = 0;
+
+  for (let i = 0; i < currentColumn.length; i++) {
+    if (currentColumn[i] === 1) {
+      currentTotal++;
+    }
+  }
+
+  if (currentTotal < 1) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+// Test if any column on this board contains conflicts
+function hasAnyColumnConflicts () {
+
+  for (let i = 0; i < this.get('n'); i++) {
+    if(this.hasColumnConflictAt(i)) {
+      return true;
+    };
+  }
+  return false;
+}
+
+window.countNQueensSolutions = function(n) {
+
+  let solutionCount = 0;
+  let board = new board({n:n});
+
+  if (n === 2 || n === 3) {
+    return solutionCount;
+
+    function solver (row) {
+      if(row === n) {
+        solutionCount++;
+        return;
+      }
+
+      for (let i = 0; i < n; i++) {
+        board.togglePiece(row, i);
+
+        if(!board.hasAnyQueensConglicts()) {
+          solver(row, i);
+        }
+        board.togglePiece(row, i);
+      }
+    };
+
+    solver(0);
+
+    this.console.log(`Number of solutions for ${n} queens: ${solutionCount}`);
+    return solutionCount;
+  }
+}
